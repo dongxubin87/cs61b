@@ -4,7 +4,7 @@
  *  command line three args, try out fun things in data folder
  */
 public class NBody{
-    public static int N;
+    private static int N;
     public static void main(String[] args){
         double T = Double.parseDouble(args[0]);
         double dt = Double.parseDouble(args[1]);
@@ -37,6 +37,13 @@ public class NBody{
             time += dt;
         }
 
+        StdOut.printf("%d\n", planets.length);
+        StdOut.printf("%.2e\n", R);
+        for (int i = 0; i < N; i++) {
+            StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n",
+                    planets[i].xxPos, planets[i].yyPos, planets[i].xxVel,
+                    planets[i].yyVel, planets[i].mass, planets[i].imgFileName);
+        }
 
 
     }
@@ -58,4 +65,5 @@ public class NBody{
         }
         return planets;
     }
+
 }
