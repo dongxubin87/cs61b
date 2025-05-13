@@ -53,7 +53,7 @@ public class PrintSeams {
                 StdOut.printf("%7.2f%s ", energy, marker);
             }
             StdOut.println();
-        }                
+        }
         // StdOut.println();
         StdOut.printf("Total energy = %f\n", totalSeamEnergy);
         StdOut.println();
