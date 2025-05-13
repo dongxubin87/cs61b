@@ -5,17 +5,17 @@ import java.util.Formatter;
  * with a large number of additional methods.
  *
  * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
- *         [Do not modify this file.]
+ * [Do not modify this file.]
  */
 public class IntList {
     /**
      * First element of list.
      */
-    public int first;
+    private int first;
     /**
      * Remaining elements of list.
      */
-    public IntList rest;
+    private IntList rest;
 
     /**
      * A List with first FIRST0 and rest REST0.
@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -81,8 +81,18 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if(A == null) {
+            return B;
+        }
+        if(B == null) {
+            return A;
+        }
+        IntList cur = A;
+        while (cur.rest != null){
+            cur = cur.rest;
+        }
+        cur.rest = B;
+        return A;
     }
 
     /**
@@ -90,23 +100,37 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if(A == null) {
+            return B;
+        }
+        if(B == null) {
+            return A;
+        }
+        IntList res = new IntList(A.first, null);
+        IntList newList = res;
+        IntList cur = A.rest;
+        while(cur != null){
+            newList.rest= new IntList(cur.first, null);
+            cur = cur.rest;
+            newList = newList.rest;
+        }
+        newList.rest = B;
+        return res;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public static IntList reverse(IntList A) {
+        if (A == null) {
+            return null;
+        }
+        IntList pre = null;
+        while (A != null) {
+            IntList next = A.rest;
+            A.rest = pre;
+            pre = A;
+            A = next;
+        }
+        return pre;
+    }
 
 
     /**
