@@ -108,7 +108,7 @@ public class LinkedListDeque<T> {
     }
 
     public T getRecursive(int index) {
-        if (index >= size) {
+        if (index < 0 || index >= size) {
             return null;
         }
         return recursion(sentinel.next, index).val;
