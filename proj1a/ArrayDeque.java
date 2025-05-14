@@ -3,17 +3,19 @@ public class ArrayDeque<T> {
     private int size; // the number 0f elements
     private int nextFirst;
     private int nextLast;
-    private int capacity;// the length of ArrayDeque
+    private int capacity; // the length of ArrayDeque
+
     // Initialize ArrayDeque
     public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
-        nextFirst = 0;// it can be any number(0~7)
+        nextFirst = 0; // it can be any number(0~7)
         nextLast = 1; //  nextFirst + 1
         capacity = 8; // default length of array
     }
 
-    /** I made some mistakes here,
+    /**
+     * I made some mistakes here,
      * oldArray = {e,f,g,null,null,a,b,c}
      * then we get newArray = {a,b,c,e,f,g,null,null,null,...}
      */
@@ -31,7 +33,7 @@ public class ArrayDeque<T> {
 
     public void addFirst(T item) {
         if (size == capacity) {
-            resize(capacity * 2);// when needed, double capacity
+            resize(capacity * 2); // when needed, double capacity
         }
         items[nextFirst] = item;
         nextFirst = (nextFirst - 1 + capacity) % capacity;
@@ -76,7 +78,7 @@ public class ArrayDeque<T> {
 
         size--;
         if ((double) size / capacity <= 0.25 && capacity >= 16) {
-            resize(capacity / 2);// here I half the capacity
+            resize(capacity / 2); // here I half the capacity
         }
         return removedValue;
     }
