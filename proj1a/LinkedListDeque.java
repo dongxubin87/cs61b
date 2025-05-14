@@ -1,3 +1,6 @@
+/** I choose to use circular sentinel,
+ * which is the teacher's recommended way
+ */
 public class LinkedListDeque<T> {
 
     private class Node {
@@ -21,7 +24,7 @@ public class LinkedListDeque<T> {
 
     private int size;
     private Node sentinel;
-
+    // circular sentinel
     public LinkedListDeque() {
         sentinel = new Node();
         sentinel.next = sentinel;
@@ -57,7 +60,7 @@ public class LinkedListDeque<T> {
             System.out.println("");
             return;
         }
-        Node cur = sentinel.next;
+        Node cur = sentinel.next; // don't change the Deque, so we need cur
         while (cur != sentinel) {
             System.out.print(cur.next.val + " ");
             cur = cur.next;
@@ -69,9 +72,9 @@ public class LinkedListDeque<T> {
             return null;
         }
         Node removalFirst = sentinel.next;
-        sentinel.next = removalFirst.next;
+        sentinel.next = removalFirst.next; // update sentinel.next
         removalFirst.next.pre = sentinel;
-        size--;
+        size--; // update size
         return removalFirst.val;
     }
 
@@ -87,28 +90,28 @@ public class LinkedListDeque<T> {
     }
 
     public T get(int index) {
-        if (index < 0 || index >= size) {
+        if (index < 0 || index >= size) { // check index
             return null;
         }
-        Node cur = sentinel;
+        Node cur = sentinel; // do not change the link, so we need a temp
         for (int i = 0; i <= index; i++) {
             cur = cur.next;
         }
 
         return cur.val;
     }
-
+    // here I created a helper method recursionHelper
     public T getRecursive(int index) {
         if (index < 0 || index >= size) {
             return null;
         }
-        return recursion(sentinel.next, index).val;
+        return recursionHelper(sentinel.next, index).val;
     }
 
-    private Node recursion(Node n, int i) {
+    private Node recursionHelper(Node n, int i) {
         if (i == 0) {
             return n;
         }
-        return recursion(n.next, i - 1);
+        return recursionHelper(n.next, i - 1);
     }
 }
