@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class TestPalindrome {
     /*// You must use this palindrome, and not instantiate
@@ -20,17 +21,22 @@ public class TestPalindrome {
 
     @Test
     public void testIsPalindrome() {
+        CharacterComparator cc = new OffByOne();
         // test empty
         String a = "";
+        assertTrue(palindrome.isPalindrome(a, cc));
         assertTrue(palindrome.isPalindrome(a));
         // test 1 char
         String b = "x";
+        assertTrue(palindrome.isPalindrome(b, cc));
         assertTrue(palindrome.isPalindrome(b));
         // test correct case
-        String c = "abccba";
+        String c = "cs61b16sc";
+        assertTrue(palindrome.isPalindrome(c, cc));
         assertTrue(palindrome.isPalindrome(c));
         // test wrong case
         String d = "abcdefg";
+        assertFalse(palindrome.isPalindrome(d, cc));
         assertFalse(palindrome.isPalindrome(d));
     }
 }
