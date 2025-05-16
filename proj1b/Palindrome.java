@@ -4,7 +4,7 @@ public class Palindrome {
         if (word == null) {
             return null;
         }
-        Deque res = new LinkedListDeque<>();
+        Deque<Character> res = new LinkedListDeque<>();
         for (int i = 0; i < word.length(); i++) {
             res.addLast(word.charAt(i));
         }
@@ -37,12 +37,12 @@ public class Palindrome {
         if (len <= 1) {
             return true;
         }
-        for (int i = 0; i < len / 2; i++) {
-            if (!cc.equalChars(word.charAt(i), word.charAt(len - 1 - i))) {
+        Deque<Character> deque = wordToDeque(word);
+        while (deque.size() > 1) {
+            if (!cc.equalChars(deque.removeFirst(), deque.removeLast())) {
                 return false;
             }
         }
         return true;
     }
-
 }
