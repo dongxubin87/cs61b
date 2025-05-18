@@ -11,21 +11,21 @@ public class TestArrayDequeGold {
     public void testDeque() {
         for (int i = 0; i < 1000; i++) {
             int testNum = StdRandom.uniform(4);
-            int randomNum = StdRandom.uniform(10) + 1;
+            Integer randomNum = StdRandom.uniform(10) + 1;
             test(testNum, randomNum);
         }
     }
 
-    public void test(int x, int element) {
+    public void test(int x, Integer element) {
         Integer actual, expected;
-        String msg;
+        String msg = "";
         switch (x) {
             case 0:
                 testStudentArrayDeque.addFirst(element);
                 testArrayDequeSolution.addFirst(element);
                 actual = testStudentArrayDeque.get(0);
                 expected = testStudentArrayDeque.get(0);
-                msg = "addFirst() method is incorrect! actual is " + actual + ". expected is " + expected + ".";
+                msg += "addFirst(" + element + ")\n";
                 assertEquals(msg, expected, actual);
                 break;
             case 1:
@@ -33,14 +33,14 @@ public class TestArrayDequeGold {
                 testArrayDequeSolution.addLast(element);
                 actual = testStudentArrayDeque.get(testStudentArrayDeque.size() - 1);
                 expected = testStudentArrayDeque.get(testArrayDequeSolution.size() - 1);
-                msg = "addLast() method is incorrect! actual is " + actual + ". expected is " + expected + ".";
+                msg += "addLast(" + element + ")\n";
                 assertEquals(msg, expected, actual);
                 break;
             case 2:
                 if (!testStudentArrayDeque.isEmpty() && !testArrayDequeSolution.isEmpty()) {
                     actual = testStudentArrayDeque.removeFirst();
                     expected = testArrayDequeSolution.removeFirst();
-                    msg = "removeFirst() method is incorrect! actual is " + actual + ". expected is " + expected + ".";
+                    msg += "removeFirst()\n";
                     assertEquals(msg, expected, actual);
                 }
                 break;
@@ -48,11 +48,12 @@ public class TestArrayDequeGold {
                 if (!testStudentArrayDeque.isEmpty() && !testArrayDequeSolution.isEmpty()) {
                     actual = testStudentArrayDeque.removeLast();
                     expected = testArrayDequeSolution.removeLast();
-                    msg = "removeLast() method is incorrect! actual is " + actual + ". expected is " + expected + ".";
+                    msg += "removeLast()\n";
                     assertEquals(msg, expected, actual);
                 }
                 break;
         }
+
 
     }
 
