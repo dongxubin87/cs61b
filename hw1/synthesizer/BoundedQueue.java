@@ -11,13 +11,13 @@ public interface BoundedQueue<T> {
 
     T peek();           // return (but do not delete) item from the front
 
-     // is the buffer empty (fillCount equals zero)?
-    default boolean isEmpty(){
+    // is the buffer empty (fillCount equals zero)?
+    default boolean isEmpty() {
         return fillCount() == 0;
     }
 
     // is the buffer full (fillCount is same as capacity)?
     default boolean isFull() {
-        return fillCount() < capacity();
+        return fillCount() == capacity();
     }
 }
