@@ -3,9 +3,11 @@ package synthesizer;
 
 //Make sure this class is public
 public class GuitarString {
-    /** Constants. Do not change. In case you're curious, the keyword final means
+    /**
+     * Constants. Do not change. In case you're curious, the keyword final means
      * the values cannot be changed at runtime. We'll discuss this and other topics
-     * in lecture on Friday. */
+     * in lecture on Friday.
+     */
     private static final int SR = 44100;      // Sampling Rate
     private static final double DECAY = .996; // energy decay factor
 
@@ -18,8 +20,8 @@ public class GuitarString {
         //       cast the result of this divsion operation into an int. For better
         //       accuracy, use the Math.round() function before casting.
         //       Your buffer should be initially filled with zeros.
-        buffer = new ArrayRingBuffer( (int) Math.round(SR / frequency));
-        for(int i=0;i<buffer.capacity();i++){
+        buffer = new ArrayRingBuffer((int) Math.round(SR / frequency));
+        for (int i = 0; i < buffer.capacity(); i++) {
             buffer.enqueue(0.0);
         }
     }
@@ -32,23 +34,23 @@ public class GuitarString {
         //       double r = Math.random() - 0.5;
         //
         //       Make sure that your random numbers are different from each other.
-        for(int i = 0;i<buffer.capacity();i++){
+        for (int i = 0; i < buffer.capacity(); i++) {
             buffer.dequeue();
             buffer.enqueue(Math.random() - 0.5);
         }
     }
 
     /* Advance the simulation one time step by performing one iteration of
-     * the Karplus-Strong algorithm. 
+     * the Karplus-Strong algorithm.
      */
     public void tic() {
         // TODO: Dequeue the front sample and enqueue a new sample that is
         //       the average of the two multiplied by the DECAY factor.
         //       Do not call StdAudio.play().
-       Double removedItem =  buffer.dequeue();
-       Double firstItem = buffer.peek();
-       Double average = DECAY * (removedItem + firstItem) / 2;
-       buffer.enqueue(average);
+        Double removedItem = buffer.dequeue();
+        Double firstItem = buffer.peek();
+        Double average = DECAY * (removedItem + firstItem) / 2;
+        buffer.enqueue(average);
 
     }
 
