@@ -4,10 +4,9 @@ package synthesizer;
 /* Don't worry too much about this, we'll get there in due time. */
 
 import edu.princeton.cs.introcs.StdAudio;
-
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests the GuitarString class.
@@ -16,6 +15,13 @@ import static org.junit.Assert.*;
  */
 
 public class TestGuitarString {
+    /**
+     * Calls tests for GuitarString.
+     */
+    public static void main(String[] args) {
+        jh61b.junit.textui.runClasses(TestGuitarString.class);
+    }
+
     @Test
     public void testPluckTheAString() {
         double CONCERT_A = 440.0;
@@ -27,11 +33,10 @@ public class TestGuitarString {
         }
     }
 
-
     @Test
     public void testTic() {
         // Create a GuitarString of frequency 11025, which
-        // is an ArrayRingBuffer of length 4. 
+        // is an ArrayRingBuffer of length 4.
         GuitarString s = new GuitarString(11025);
         s.pluck();
 
@@ -55,13 +60,5 @@ public class TestGuitarString {
         // for assertEquals(double, double)
         assertEquals(expected, s5, 0.001);
 
-    }
-
-
-    /**
-     * Calls tests for GuitarString.
-     */
-    public static void main(String[] args) {
-        jh61b.junit.textui.runClasses(TestGuitarString.class);
     }
 } 
