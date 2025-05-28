@@ -1,0 +1,16 @@
+package byog.Core;
+
+public class Room {
+    private int width;
+    private int height;
+    private int x_room;
+    private int y_room;
+
+    // Room constructor
+    public Room(int width,int height,int x_room,int y_room){
+        this.width = width;
+        this.height = height;
+        this.x_room = x_room;
+        this.y_room = y_room;
+    }
+}

@@ -18,21 +18,12 @@ public class Game {
      */
     public void playWithKeyboard() {
         ter.initialize(WIDTH,HEIGHT);
-        TETile[][] myWorldFrame = new TETile[WIDTH][HEIGHT];
-        InitializeTiles(myWorldFrame);
-        drawMyWorld(myWorldFrame);
-        ter.renderFrame(myWorldFrame);
+        World world = new World(WIDTH,HEIGHT,SEED);
+        TETile[][] teTiles = world.getTeTiles();
+        drawMyWorld(teTiles);
+        ter.renderFrame(teTiles);
     }
-    // initialize the entire window with Nothing
-    public void InitializeTiles(TETile[][] tiles) {
-        int width = tiles.length;
-        int height = tiles[0].length;
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                tiles[i][j] = Tileset.NOTHING;
-            }
-        }
-    }
+
     // draw my game frame
     public void drawMyWorld(TETile[][] tiles){
         for(int i = 0;i<5;i++){
