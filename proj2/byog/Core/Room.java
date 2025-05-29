@@ -13,4 +13,19 @@ public class Room {
         this.x_room = x_room;
         this.y_room = y_room;
     }
+
+    public int getX() {
+        return x_room;
+    }
+
+    public int getY() {
+        return y_room;
+    }
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
 }
