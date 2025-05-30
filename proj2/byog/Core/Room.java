@@ -7,7 +7,7 @@ public class Room {
     private int y_room;
 
     // Room constructor
-    public Room(int width,int height,int x_room,int y_room){
+    public Room(int x_room, int y_room,int width,int height){
         this.width = width;
         this.height = height;
         this.x_room = x_room;

@@ -12,7 +12,6 @@ public class Game {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
     private static final long SEED = 2873123;
-    private static final Random RANDOM = new Random(SEED);
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
      */
@@ -20,17 +19,7 @@ public class Game {
         ter.initialize(WIDTH,HEIGHT);
         World world = new World(WIDTH,HEIGHT,SEED);
         TETile[][] teTiles = world.getTeTiles();
-        drawMyWorld(teTiles);
         ter.renderFrame(teTiles);
-    }
-
-    // draw my game frame
-    public void drawMyWorld(TETile[][] tiles){
-        for(int i = 0;i<5;i++){
-            for(int j = 0;j<9;j++){
-                tiles[j][i] = Tileset.WALL;
-            }
-        }
     }
 
     /**
