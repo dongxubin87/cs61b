@@ -17,7 +17,7 @@ public class RoomGenerator {
         this.width = width;
         this.height = height;
         random = new Random(seed);
-        maxRandomNumberOfRooms = RandomUtils.uniform(random, 20, 30);
+        maxRandomNumberOfRooms = RandomUtils.uniform(random, 20, 25);
     }
 
     // draw teTiles
@@ -25,8 +25,8 @@ public class RoomGenerator {
         List<Room> rooms = new ArrayList<>();
         for (int i = 0; i < maxRandomNumberOfRooms; i++) {
             // generate a random room with random width, height, x, y
-            int randomWidth = RandomUtils.uniform(random, 4, 7);
-            int randomHeight = RandomUtils.uniform(random, 4, 7);
+            int randomWidth = RandomUtils.uniform(random, 3, 6);
+            int randomHeight = RandomUtils.uniform(random, 3, 6);
             int xPos = RandomUtils.uniform(random, 0, width - randomWidth - 1);
             int yPos = RandomUtils.uniform(random, 0, height - randomHeight - 1);
             // build a new room
