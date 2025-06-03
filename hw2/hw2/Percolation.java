@@ -6,7 +6,7 @@ public class Percolation {
     private Boolean[][] sites;
     private int opendSites;
     private WeightedQuickUnionUF uf;
-    private int WIDTH;
+    private int WIDTH; // the width of the map , also the length of boolean array
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -22,9 +22,16 @@ public class Percolation {
 
         opendSites = 0;
         WIDTH = N;
-        // initialize class WeightedQuickUnionUF;
-        uf = new WeightedQuickUnionUF(N * N);
-
+        // initialize class WeightedQuickUnionUF, last item as top virtual site, last second item as bottom virtual site
+        uf = new WeightedQuickUnionUF(N * N + 2);
+        // connect items in the first row to the last item
+        for (int i = 0; i < N; i++) {
+            uf.union(N * N + 1, i);
+        }
+        // connect items in the last row to the last second item
+        for (int i = N * N - 1; i >= N * N - N; i--) {
+            uf.union(N * N, i);
+        }
     }
 
     public void open(int row, int col) {
@@ -33,8 +40,9 @@ public class Percolation {
             return;
         }
         sites[row][col] = true;
+        // update openedSites
         opendSites++;
-
+        // call the method after opening any site successfully
         AutoConnectSites(row, col);
 
     }
@@ -42,22 +50,22 @@ public class Percolation {
     // the idea is that after every time open a site, connect its up,down,left,right sites
     private void AutoConnectSites(int x, int y) {
         int pos = xyToId(x, y);
-        // initialize four sites in four directions
-        int up = pos - WIDTH;
-        int down = pos + WIDTH;
-        int left = pos - 1;
-        int right = pos + 1;
-        if (up >= 0 && sites[x-1][y] && !uf.connected(pos, up)) {
-            uf.union(pos, up);
+        // initialize up direction
+
+        if (x - 1 >= 0 && sites[x - 1][y]) {
+            uf.union(pos, pos - WIDTH);
         }
-        if (down < WIDTH * WIDTH && sites[x+1][y] && !uf.connected(pos, down)) {
-            uf.union(pos, down);
+        // initialize down direction
+        if (x + 1 < WIDTH && sites[x + 1][y]) {
+            uf.union(pos, pos + WIDTH);
         }
-        if (left >= 0 && sites[x][y-1]  && !uf.connected(pos, left)) {
-            uf.union(pos, left);
+        // initialize left direction
+        if (y - 1 >= 0 && sites[x][y - 1]) {
+            uf.union(pos, pos - 1);
         }
-        if (right < WIDTH * WIDTH && sites[x][y+1]  && !uf.connected(pos, right)) {
-            uf.union(pos, right);
+        // initialize right direction
+        if (y + 1 < WIDTH && sites[x][y + 1]) {
+            uf.union(pos, pos + 1);
         }
     }
 
@@ -68,7 +76,7 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         checkValid(row, col);
-        return false;
+        return uf.connected(xyToId(row, col), WIDTH * WIDTH + 1);// check this site is connected to the top site
     }
 
     private void checkValid(int row, int col) {
@@ -86,7 +94,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return false;
+        return uf.connected(WIDTH * WIDTH, WIDTH * WIDTH + 1); // check top and bottom is connected
     }
 
 }
