@@ -99,6 +99,9 @@ public class Percolation {
     }
 
     public boolean percolates() {
+        if(WIDTH == 1 && sites[0][0]){
+            return true;
+        }
         return uf.connected(WIDTH * WIDTH, WIDTH * WIDTH + 1); // check top and bottom is connected
     }
 

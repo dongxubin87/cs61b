@@ -28,8 +28,6 @@ public class PercolationStats {
         int t = experimentTimes;
 
         while (t >= 0) {
-            // create new perc
-            perc = new PercolationFactory().make(WIDTH);
 
             while (!perc.percolates()) {
                 int x = StdRandom.uniform(0, WIDTH);
@@ -37,8 +35,10 @@ public class PercolationStats {
                 perc.open(x, y);
             }
             // update array
-            thresholdArray[experimentTimes - t] = perc.numberOfOpenSites() / WIDTH * WIDTH;
+            thresholdArray[experimentTimes - t] = perc.numberOfOpenSites() / (WIDTH * WIDTH);
             t--;
+            // create new perc
+            perc = new PercolationFactory().make(WIDTH);
         }
 
     }
