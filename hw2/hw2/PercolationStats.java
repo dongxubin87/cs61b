@@ -19,6 +19,7 @@ public class PercolationStats {
         experimentTimes = T;
         WIDTH = N;
         thresholdArray = new double[T];
+        calculateShreshold();
     }
 
 

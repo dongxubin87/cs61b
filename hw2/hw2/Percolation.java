@@ -22,7 +22,8 @@ public class Percolation {
 
         opendSites = 0;
         WIDTH = N;
-        // initialize class WeightedQuickUnionUF, last item as top virtual site, last second item as bottom virtual site
+        // initialize class WeightedQuickUnionUF, last item as top virtual site,
+        // last second item as bottom virtual site
         uf = new WeightedQuickUnionUF(N * N + 2);
         // connect items in the first row to the last item
         for (int i = 0; i < N; i++) {
@@ -43,12 +44,12 @@ public class Percolation {
         // update openedSites
         opendSites++;
         // call the method after opening any site successfully
-        AutoConnectSites(row, col);
+        autoConnectSites(row, col);
 
     }
 
     // the idea is that after every time open a site, connect its up,down,left,right sites
-    private void AutoConnectSites(int x, int y) {
+    private void autoConnectSites(int x, int y) {
         int pos = xyToId(x, y);
         // initialize up direction
 
@@ -76,7 +77,11 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         checkValid(row, col);
-        return uf.connected(xyToId(row, col), WIDTH * WIDTH + 1);// check this site is connected to the top site
+        if (!sites[row][col]) {
+            return false;
+        }
+        // check this site is connected to the top site
+        return uf.connected(xyToId(row, col), WIDTH * WIDTH + 1);
     }
 
     private void checkValid(int row, int col) {
@@ -95,6 +100,10 @@ public class Percolation {
 
     public boolean percolates() {
         return uf.connected(WIDTH * WIDTH, WIDTH * WIDTH + 1); // check top and bottom is connected
+    }
+
+    public static void main(String[] args) {
+
     }
 
 }
