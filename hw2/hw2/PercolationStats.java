@@ -6,7 +6,7 @@ import edu.princeton.cs.introcs.StdStats;
 public class PercolationStats {
 
     private PercolationFactory factory;
-    private int experimentTimes;
+    private int times;
     private int width;
     private double standardDeviation;
     private double[] thresholdArray; // store each threshold
@@ -16,7 +16,7 @@ public class PercolationStats {
             throw new IllegalArgumentException("Please a legal number");
         }
         factory = pf;
-        experimentTimes = T;
+        times = T;
         width = N;
         thresholdArray = new double[T];
         calculateThreshold();
@@ -25,7 +25,7 @@ public class PercolationStats {
 
     private void calculateThreshold() {
 
-        int t = experimentTimes;
+        int t = times;
 
         while (t > 0) {
             // create new perc
@@ -36,7 +36,7 @@ public class PercolationStats {
                 perc.open(x, y);
             }
             // update array
-            thresholdArray[experimentTimes - t] = (double) perc.numberOfOpenSites() / (width * width);
+            thresholdArray[times - t] = (double) perc.numberOfOpenSites() / (width * width);
             t--;
 
         }
@@ -53,10 +53,10 @@ public class PercolationStats {
 
     public double confidenceLow() {
 
-        return mean() - 1.96 * stddev() / Math.sqrt(experimentTimes);
+        return mean() - 1.96 * stddev() / Math.sqrt(times);
     }
 
     public double confidenceHigh() {
-        return mean() + 1.96 * stddev() / Math.sqrt(experimentTimes);
+        return mean() + 1.96 * stddev() / Math.sqrt(times);
     }
 }
