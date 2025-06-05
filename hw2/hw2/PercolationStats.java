@@ -5,9 +5,9 @@ import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
 
-    private Percolation perc;
+    private PercolationFactory factory;
     private int experimentTimes;
-    private int WIDTH;
+    private int width;
     private double standardDeviation;
     private double[] thresholdArray; // store each threshold
 
@@ -15,30 +15,30 @@ public class PercolationStats {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("Please a legal number");
         }
-        perc = pf.make(N);
+        factory = pf;
         experimentTimes = T;
-        WIDTH = N;
+        width = N;
         thresholdArray = new double[T];
-        calculateShreshold();
+        calculateThreshold();
     }
 
 
-    private void calculateShreshold() {
+    private void calculateThreshold() {
 
         int t = experimentTimes;
 
         while (t >= 0) {
-
+            // create new perc
+            Percolation perc = factory.make(width);
             while (!perc.percolates()) {
-                int x = StdRandom.uniform(0, WIDTH);
-                int y = StdRandom.uniform(0, WIDTH);
+                int x = StdRandom.uniform(0, width);
+                int y = StdRandom.uniform(0, width);
                 perc.open(x, y);
             }
             // update array
-            thresholdArray[experimentTimes - t] = perc.numberOfOpenSites() / (WIDTH * WIDTH);
+            thresholdArray[experimentTimes - t] =(double) perc.numberOfOpenSites() / (width * width);
             t--;
-            // create new perc
-            perc = new PercolationFactory().make(WIDTH);
+
         }
 
     }
@@ -53,7 +53,7 @@ public class PercolationStats {
 
     public double confidenceLow() {
 
-        return mean() - 1.96 * stddev() / Math.sqrt(experimentTimes);
+        return mean() - 1.96 * stddev() / Math.sqrt( experimentTimes);
     }
 
     public double confidenceHigh() {

@@ -6,7 +6,9 @@ public class Percolation {
     private Boolean[][] sites;
     private int opendSites;
     private WeightedQuickUnionUF uf;
-    private int WIDTH; // the width of the map , also the length of boolean array
+    private int width; // the width of the map , also the length of boolean array
+    private int topSite;
+    private int bottomSite;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -21,18 +23,12 @@ public class Percolation {
         }
 
         opendSites = 0;
-        WIDTH = N;
-        // initialize class WeightedQuickUnionUF, last item as top virtual site,
-        // last second item as bottom virtual site
+        width = N;
+        // here we set top(N*N+1) and bottom(N*N) site,
         uf = new WeightedQuickUnionUF(N * N + 2);
-        // connect items in the first row to the last item
-        for (int i = 0; i < N; i++) {
-            uf.union(N * N + 1, i);
-        }
-        // connect items in the last row to the last second item
-        for (int i = N * N - 1; i >= N * N - N; i--) {
-            uf.union(N * N, i);
-        }
+
+        topSite = N * N + 1;
+        bottomSite = N * N;
     }
 
     public void open(int row, int col) {
@@ -41,6 +37,14 @@ public class Percolation {
             return;
         }
         sites[row][col] = true;
+        // if the site is right in the first row, then connect it to the top site
+        if (row == 0) {
+            uf.union(xyToId(row, col), topSite);
+        }
+        // if the site is right in the last row, then connect it to the bottom site
+        if (row == width - 1) {
+            uf.union(xyToId(row, col), bottomSite);
+        }
         // update openedSites
         opendSites++;
         // call the method after opening any site successfully
@@ -54,18 +58,18 @@ public class Percolation {
         // initialize up direction
 
         if (x - 1 >= 0 && sites[x - 1][y]) {
-            uf.union(pos, pos - WIDTH);
+            uf.union(pos, pos - width);
         }
         // initialize down direction
-        if (x + 1 < WIDTH && sites[x + 1][y]) {
-            uf.union(pos, pos + WIDTH);
+        if (x + 1 < width && sites[x + 1][y]) {
+            uf.union(pos, pos + width);
         }
         // initialize left direction
         if (y - 1 >= 0 && sites[x][y - 1]) {
             uf.union(pos, pos - 1);
         }
         // initialize right direction
-        if (y + 1 < WIDTH && sites[x][y + 1]) {
+        if (y + 1 < width && sites[x][y + 1]) {
             uf.union(pos, pos + 1);
         }
     }
@@ -81,11 +85,11 @@ public class Percolation {
             return false;
         }
         // check this site is connected to the top site
-        return uf.connected(xyToId(row, col), WIDTH * WIDTH + 1);
+        return uf.connected(xyToId(row, col), width * width + 1);
     }
 
     private void checkValid(int row, int col) {
-        if (row < 0 || row >= WIDTH || col < 0 || col >= WIDTH) {
+        if (row < 0 || row >= width || col < 0 || col >= width) {
             throw new IllegalArgumentException("Please enter a legal argument.");
         }
     }
@@ -95,14 +99,11 @@ public class Percolation {
     }
 
     private int xyToId(int x, int y) {
-        return WIDTH * x + y;
+        return width * x + y;
     }
 
     public boolean percolates() {
-        if(WIDTH == 1 && sites[0][0]){
-            return true;
-        }
-        return uf.connected(WIDTH * WIDTH, WIDTH * WIDTH + 1); // check top and bottom is connected
+        return uf.connected(width * width, width * width + 1); // check top and bottom is connected
     }
 
     public static void main(String[] args) {
