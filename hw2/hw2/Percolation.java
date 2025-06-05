@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
     private Boolean[][] sites;
-    private int opendSites;
+    private int openedSites;
     private WeightedQuickUnionUF uf;
     private int width; // the width of the map , also the length of boolean array
     private int topSite;
@@ -12,7 +12,7 @@ public class Percolation {
 
     public Percolation(int N) {
         if (N <= 0) {
-            throw new IndexOutOfBoundsException("Please enter a valid number!");
+            throw new IllegalArgumentException("N must be > 0");
         }
         sites = new Boolean[N][N];
         // initialize all the sites blocked
@@ -22,7 +22,7 @@ public class Percolation {
             }
         }
 
-        opendSites = 0;
+        openedSites = 0;
         width = N;
         // here we set top(N*N+1) and bottom(N*N) site,
         uf = new WeightedQuickUnionUF(N * N + 2);
@@ -46,7 +46,7 @@ public class Percolation {
             uf.union(xyToId(row, col), bottomSite);
         }
         // update openedSites
-        opendSites++;
+        openedSites++;
         // call the method after opening any site successfully
         autoConnectSites(row, col);
 
@@ -90,12 +90,12 @@ public class Percolation {
 
     private void checkValid(int row, int col) {
         if (row < 0 || row >= width || col < 0 || col >= width) {
-            throw new IllegalArgumentException("Please enter a legal argument.");
+            throw new IndexOutOfBoundsException("row or column index out of bounds");
         }
     }
 
     public int numberOfOpenSites() {
-        return opendSites;
+        return openedSites;
     }
 
     private int xyToId(int x, int y) {

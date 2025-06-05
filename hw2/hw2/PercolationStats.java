@@ -27,7 +27,7 @@ public class PercolationStats {
 
         int t = experimentTimes;
 
-        while (t >= 0) {
+        while (t > 0) {
             // create new perc
             Percolation perc = factory.make(width);
             while (!perc.percolates()) {
@@ -36,7 +36,7 @@ public class PercolationStats {
                 perc.open(x, y);
             }
             // update array
-            thresholdArray[experimentTimes - t] =(double) perc.numberOfOpenSites() / (width * width);
+            thresholdArray[experimentTimes - t] = (double) perc.numberOfOpenSites() / (width * width);
             t--;
 
         }
@@ -53,7 +53,7 @@ public class PercolationStats {
 
     public double confidenceLow() {
 
-        return mean() - 1.96 * stddev() / Math.sqrt( experimentTimes);
+        return mean() - 1.96 * stddev() / Math.sqrt(experimentTimes);
     }
 
     public double confidenceHigh() {
