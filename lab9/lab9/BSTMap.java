@@ -34,7 +34,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Creates an empty BSTMap. */
     public BSTMap() {
         this.clear();
-        hsSet =  new HashSet<>();
+        hsSet = new HashSet<>();
     }
 
     /* Removes all of the mappings from this map. */
@@ -216,6 +216,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             putLeftNode(root);
         }
 
+        // this is inorder traversal: left - root - right
         public void putLeftNode(Node x) {
             while (x != null) {
                 stack.push(x);

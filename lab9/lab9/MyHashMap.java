@@ -53,13 +53,25 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        if(key == null ){
+            throw new IllegalArgumentException("key is null");
+        }
+        if(size == 0 ){
+            throw new IllegalArgumentException("map is empty");
+        }
+        int index = hash(key);
+       return  buckets[index].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        if(key == null ){
+            throw new IllegalArgumentException("key is null");
+        }
+        if(value == null ){
+            throw new IllegalArgumentException("value is empty");
+        }
     }
 
     /* Returns the number of key-value mappings in this map. */
