@@ -3,6 +3,7 @@ package lab9;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  * Implementation of interface Map61B with BST as core data structure.
@@ -29,10 +30,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     private Node root;  /* Root node of the tree. */
     private int size; /* The number of key-value pairs in the tree */
     private Set<K> hsSet;
-    private ULLMap myULLMap;
+
     /* Creates an empty BSTMap. */
     public BSTMap() {
         this.clear();
+        hsSet =  new HashSet<>();
     }
 
     /* Removes all of the mappings from this map. */
@@ -40,7 +42,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     public void clear() {
         root = null;
         size = 0;
-        myULLMap.clear();
     }
 
     /**
@@ -102,7 +103,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (key == null || value == null) {
             throw new IllegalArgumentException();
         }
-        myULLMap.put(key,value);
         hsSet.add(key);
         root = putHelper(key, value, root);
     }
@@ -131,7 +131,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (key == null) {
             throw new IllegalArgumentException();
         }
-        myULLMap.remove(key);
         hsSet.remove(key);
         root = remove(key, root);
         return get(key);
@@ -151,14 +150,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             if (x.left == null) {
                 return x.right;
             }
-            if(x.right == null){
+            if (x.right == null) {
                 return x.left;
             }
             Node t = x;
             x = min(x.right);
 
             Node k = t.right;
-            while(k != null){
+            while (k != null) {
                 k = k.left;
             }
             x.right = t.right;
@@ -193,38 +192,50 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        if(key == null || value == null){
+        if (key == null || value == null) {
             throw new IllegalArgumentException("key or value in not legal");
         }
-        if(get(key) != value){
+        if (get(key) != value) {
             throw new IllegalArgumentException("key or value in not legal");
         }
-        myULLMap.remove(key,value);
         hsSet.remove(key);
-        root = remove(key,root);
-
+        root = remove(key, root);
+        return value;
     }
-
 
 
     @Override
     public Iterator<K> iterator() {
-       return  new BSTMapIterator();
+        return new BSTMapIterator();
     }
 
-    private class BSTMapIterator implements Iterator<K>{
-        Set<K> cur;
-        BSTMapIterator(){
-            cur = hsSet;
+    private class BSTMapIterator implements Iterator<K> {
+        private Stack<Node> stack = new Stack();
+
+        BSTMapIterator() {
+            putLeftNode(root);
         }
-        @Override
-        public boolean hasNext(){
-             cur = myULLMap.;
-            while(cur)
+
+        public void putLeftNode(Node x) {
+            while (x != null) {
+                stack.push(x);
+                x = x.left;
+            }
+
         }
+
         @Override
-        public K next(){
-            while()
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public K next() {
+            Node cur = stack.pop();
+            if (cur.right != null) {
+                putLeftNode(cur.right);
+            }
+            return cur.key;
         }
     }
 }
