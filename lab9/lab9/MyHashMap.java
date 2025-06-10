@@ -50,6 +50,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return Math.floorMod(key.hashCode(), numBuckets);
     }
 
+    private int hash(K key, int newsize) {
+        if (key == null) {
+            return 0;
+        }
+
+        return Math.floorMod(key.hashCode(), newsize);
+    }
+
     /* Returns the value to which the specified key is mapped, or null if this
      * map contains no mapping for the key.
      */
@@ -74,22 +82,33 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (value == null) {
             throw new IllegalArgumentException("value is empty");
         }
+        if (!buckets[hash(key)].containsKey(key)) {
+            size++;
+        }
+
         buckets[hash(key)].put(key, value);
+        if (loadFactor() > MAX_LF) {
+            resize();
+        }
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        int sum = 0;
-        for (int i = 0; i < buckets.length; i++) {
-            sum += buckets[i].size();
-        }
-        return sum;
+        return size;
     }
 
-    private void resize(){
-        int newSize = size * 2;
+    private void resize() {
+        int newSize = buckets.length * 2;
         ArrayMap<K, V>[] newBuckets = new ArrayMap[newSize];
+        // initialize newBuckets
+        for (int i = 0; i < newSize; i++) {
+            newBuckets[i] = new ArrayMap<>();
+        }
+        for (K k : keySet()) {
+            newBuckets[hash(k, newSize)].put(k, get(k));
+        }
+
     }
 
     /// ///////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
@@ -101,7 +120,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         for (int i = 0; i < buckets.length; i++) {
             hsSet.addAll(buckets[i].keySet());
         }
-        return  hsSet;
+        return hsSet;
     }
 
     /* Removes the mapping for the specified key from this map if exists.
@@ -139,7 +158,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     private class MyHashMapIterator implements Iterator<K> {
         private Iterator<K> keyIterator;
-        MyHashMapIterator(){
+
+        MyHashMapIterator() {
             Set<K> set = keySet();
             keyIterator = set.iterator();
         }
