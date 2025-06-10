@@ -131,9 +131,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (key == null) {
             throw new IllegalArgumentException();
         }
-        hsSet.remove(key);
+        V oldValue = get(key);
+        if (oldValue == null) return null;
         root = remove(key, root);
-        return get(key);
+        hsSet.remove(key);
+        return oldValue;
     }
 
     private Node remove(K key, Node x) {
@@ -155,15 +157,15 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             }
             Node t = x;
             x = min(x.right);
-
-            Node k = t.right;
-            while (k != null) {
-                k = k.left;
-            }
-            x.right = t.right;
+            x.right = deleteMin(t.right);
             x.left = t.left;
-
         }
+        return x;
+    }
+
+    private Node deleteMin(Node x) {
+        if (x.left == null) return x.right;
+        x.left = deleteMin(x.left);
         return x;
     }
 
@@ -180,9 +182,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (x == null) {
             return null;
         } else {
-            min(x.left);
+           return  min(x.left);
         }
-        return x;
     }
 
     /**
