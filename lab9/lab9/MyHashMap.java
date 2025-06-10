@@ -66,9 +66,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (key == null) {
             throw new IllegalArgumentException("key is null");
         }
-        if (size == 0) {
-            throw new IllegalArgumentException("map is empty");
-        }
         int index = hash(key);
         return buckets[index].get(key);
     }
@@ -132,10 +129,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (key == null) {
             throw new IllegalArgumentException("key is null");
         }
-        if (size == 0) {
-            throw new IllegalArgumentException("map is null");
+        V removed = buckets[hash(key)].remove(key);
+        if (removed != null) {
+            size--;
         }
-        return buckets[hash(key)].remove(key);
+        return removed;
     }
 
     /* Removes the entry for the specified key only if it is currently mapped to
@@ -146,10 +144,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (key == null) {
             throw new IllegalArgumentException("key is null");
         }
-        if (size == 0) {
-            throw new IllegalArgumentException("map is null");
+
+        V removed = buckets[hash(key)].remove(key);
+        if (removed != null) {
+            size--;
         }
-        return buckets[hash(key)].remove(key, value);
+        return removed;
     }
 
     @Override
