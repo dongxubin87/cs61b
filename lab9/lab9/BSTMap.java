@@ -179,11 +179,11 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     }
 
     private Node min(Node x) {
-        if (x == null) {
-            return null;
-        } else {
-           return  min(x.left);
+        if (x.left == null) {
+            return x;
         }
+        return min(x.left);
+
     }
 
     /**
