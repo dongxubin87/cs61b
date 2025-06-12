@@ -174,14 +174,19 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T removeMin() {
         /* TODO: Your code here! */
-        T t = peek();
-        if (t != null) {
-            swap(1, size);
-            contents[size] = null;
-            sink(1);
-            size--;
+        if (size == 0) {
+            throw new NullPointerException("Heap is empty.");
         }
-        return t;
+
+        Node min = contents[1];
+
+        swap(1, size);
+        contents[size] = null;
+        size--;
+        if (size > 1) {
+            sink(1);
+        }
+        return min.item();
     }
 
     /**
