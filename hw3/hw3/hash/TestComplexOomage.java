@@ -1,12 +1,10 @@
 package hw3.hash;
 
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TestComplexOomage {
 
@@ -44,10 +42,11 @@ public class TestComplexOomage {
         int N = 1000;
         for (int i = 0; i < N; i++) {
             List<Integer> temp = new ArrayList<>();
+            temp.add(i % 256);
+
             for (int j = 0; j < 4; j++) {
-                temp.add(5);
+                temp.add(j);
             }
-            temp.add(i % 9);
             deadlyList.add(new ComplexOomage(temp));
         }
         // Your code here.
