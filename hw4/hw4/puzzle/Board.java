@@ -12,7 +12,7 @@ public class Board implements WorldState {
      */
 
     private final int[][] tiles;
-    private int N;
+    private int size;
     private int BLANK = 0;
 
     public String toString() {
@@ -31,22 +31,22 @@ public class Board implements WorldState {
     }
 
     public Board(int[][] tiles) {
-        N = tiles.length;
-        this.tiles = new int[N][N];
-        for (int i = 0; i < N; i++) {
-            this.tiles[i] = Arrays.copyOf(tiles[i], N);
+        size = tiles.length;
+        this.tiles = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            this.tiles[i] = Arrays.copyOf(tiles[i], size);
         }
     }
 
     public int tileAt(int i, int j) {
-        if (i < 0 || i >= N || j < 0 || j >= N) {
+        if (i < 0 || i >= size || j < 0 || j >= size) {
             throw new IndexOutOfBoundsException("Invalid indices");
         }
         return tiles[i][j];
     }
 
     public int size() {
-        return N;
+        return size;
     }
 
 
@@ -86,9 +86,9 @@ public class Board implements WorldState {
 
     public int hamming() {
         int cnt = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (tiles[i][j] != i * N + j + 1 && tiles[i][j] != 0) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (tiles[i][j] != i * size + j + 1 && tiles[i][j] != 0) {
                     cnt++;
                 }
             }
@@ -98,12 +98,12 @@ public class Board implements WorldState {
 
     public int manhattan() {
         int cnt = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (tiles[i][j] != i * N + j + 1 && tiles[i][j] != 0) {
-                    int x_abs = Math.abs((tiles[i][j] - 1) / N - i);
-                    int y_abs = Math.abs((tiles[i][j] - 1) % N - j);
-                    cnt += x_abs + y_abs;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (tiles[i][j] != i * size + j + 1 && tiles[i][j] != 0) {
+                    int xAbs = Math.abs((tiles[i][j] - 1) / size - i);
+                    int yAbs = Math.abs((tiles[i][j] - 1) % size - j);
+                    cnt += xAbs + yAbs;
                 }
             }
         }
@@ -116,12 +116,16 @@ public class Board implements WorldState {
     }
 
     public boolean equals(Object y) {
+        if (this == y) {
+            return true;
+        }
         if (y == null || y.getClass() != this.getClass()) {
             return false;
         }
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (((Board) y).tileAt(i, j) != tiles[i][j]) {
+        Board that = (Board) y;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (that.tileAt(i, j) != this.tiles[i][j]) {
                     return false;
                 }
             }
@@ -130,4 +134,11 @@ public class Board implements WorldState {
         return true;
     }
 
+    public int hashCode() {
+        int result = 1;
+        for (int i = 0; i < size; i++) {
+            result = result * 31 + Arrays.hashCode(tiles[i]);
+        }
+        return result;
+    }
 }

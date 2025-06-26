@@ -2,6 +2,7 @@ package hw4.puzzle;
 
 import edu.princeton.cs.algs4.MinPQ;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 
 
@@ -15,6 +16,7 @@ public class Solver {
         public SearchNode(WorldState state, int moves, SearchNode prev) {
             this.state = state;
             this.moves = moves;
+            this.prev = prev;
             this.priority = moves + this.state.estimatedDistanceToGoal();
         }
 
@@ -28,23 +30,40 @@ public class Solver {
 
     public Solver(WorldState initial) {
         MinPQ<SearchNode> pq = new MinPQ<>();
+        HashSet<WorldState> visited = new HashSet<>();
+
         pq.insert(new SearchNode(initial, 0, null));
+
         while (!pq.isEmpty()) {
             SearchNode curr = pq.delMin();
+
             if (curr.state.isGoal()) {
                 goalNode = curr;
                 return;
             }
+
+            if (visited.contains(curr.state)) {
+                continue;
+            }
+
+            visited.add(curr.state);
+
             for (WorldState neighbor : curr.state.neighbors()) {
                 if (curr.prev != null && neighbor.equals(curr.prev.state)) {
                     continue;
                 }
-                pq.insert(new SearchNode(neighbor, curr.moves + 1, curr));
+
+                if (!visited.contains(neighbor)) {
+                    pq.insert(new SearchNode(neighbor, curr.moves + 1, curr));
+                }
             }
         }
     }
 
     public int moves() {
+        if (goalNode == null) {
+            throw new IllegalStateException("Solver did not find a solution.");
+        }
         return goalNode.moves;
     }
 
