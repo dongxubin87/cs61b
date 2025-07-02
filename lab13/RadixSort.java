@@ -18,17 +18,19 @@ public class RadixSort {
 
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
-        String[] sorted = new String[asciis.length];
+        String[] arr = Arrays.copyOf(asciis, asciis.length);
+
 
         int R = 256;
         int maxlen = 0;
-        for (String x : asciis) {
+        for (String x : arr) {
             maxlen = Math.max(maxlen, x.length());
         }
-        int[] counts = new int[R];
+
         for (int i = maxlen - 1; i >= 0; i--) {
-            for (String x : asciis) {
-                char c = x.length() > i ? x.charAt(i) : 0;
+            int[] counts = new int[R];
+            for (String x : arr) {
+                int c = x.length() > i ? x.charAt(i) : 0;
                 counts[c]++;
             }
 
@@ -36,16 +38,19 @@ public class RadixSort {
             int pos = 0;
             for (int j = 0; j < R; j++) {
                 starts[j] = pos;
-                pos += counts[i];
+                pos += counts[j];
             }
-            for (String x : asciis) {
+            String[] sorted = new String[arr.length];
+            for (String x : arr) {
                 int item = x.length() > i ? x.charAt(i) : 0;
                 int place = starts[item];
                 sorted[place] = x;
                 starts[item]++;
             }
+            arr = sorted;
         }
-        return sorted;
+
+        return arr;
     }
 
     /**
@@ -73,4 +78,5 @@ public class RadixSort {
         // Optional MSD helper method for optional MSD radix sort
         return;
     }
+
 }
