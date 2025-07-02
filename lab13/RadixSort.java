@@ -21,7 +21,7 @@ public class RadixSort {
         String[] arr = Arrays.copyOf(asciis, asciis.length);
 
 
-        int R = 256;
+        int R = 257;
         int maxlen = 0;
         for (String x : arr) {
             maxlen = Math.max(maxlen, x.length());
@@ -30,8 +30,13 @@ public class RadixSort {
         for (int i = maxlen - 1; i >= 0; i--) {
             int[] counts = new int[R];
             for (String x : arr) {
-                int c = x.length() > i ? x.charAt(i) : 0;
-                counts[c]++;
+                int c = 0;
+                if (x.length() == 0) {
+                    counts[c]++;
+                } else {
+                    c = x.length() > i ? x.charAt(i) : 0;
+                    counts[c + 1]++;
+                }
             }
 
             int[] starts = new int[R];
@@ -42,7 +47,11 @@ public class RadixSort {
             }
             String[] sorted = new String[arr.length];
             for (String x : arr) {
-                int item = x.length() > i ? x.charAt(i) : 0;
+                int item = 0;
+                if (x.length() > 0) {
+                    item = x.length() > i ? x.charAt(i) : 0;
+                    item += 1;
+                }
                 int place = starts[item];
                 sorted[place] = x;
                 starts[item]++;
@@ -78,5 +87,4 @@ public class RadixSort {
         // Optional MSD helper method for optional MSD radix sort
         return;
     }
-
 }
