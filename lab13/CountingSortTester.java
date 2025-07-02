@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+
 public class CountingSortTester {
 
     /**
@@ -51,6 +52,7 @@ public class CountingSortTester {
     public void testBetterWithSomeNegative() {
         int[] sortedSomeNegative = CountingSort.betterCountingSort(someNegative);
         assertIsSorted(sortedSomeNegative);
+
     }
 
 
