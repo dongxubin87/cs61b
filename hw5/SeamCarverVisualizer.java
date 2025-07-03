@@ -13,24 +13,10 @@
  *  ******************************************************************************/
 
 import edu.princeton.cs.algs4.Picture;
-import java.awt.Color;
-import java.awt.FileDialog;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
 
 public class SeamCarverVisualizer {
     JFrame frame;
@@ -38,7 +24,7 @@ public class SeamCarverVisualizer {
     public void visualizeHorizontalCarve(SeamCarver sc, int N) {
         for (int i = 0; i < N; i++) {
             int[] minSeam = sc.findHorizontalSeam();
-            Picture p = sc.picture();            
+            Picture p = sc.picture();
             paintHorizontalSeam(p, minSeam);
             show(p);
             sc.removeHorizontalSeam(minSeam);
@@ -83,7 +69,7 @@ public class SeamCarverVisualizer {
             JMenuItem menuItem1 = new JMenuItem(" Save...   ");
             menuItem1.addActionListener(img);
             menuItem1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-                                     Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             menu.add(menuItem1);
             frame.setJMenuBar(menuBar);
 
@@ -94,15 +80,16 @@ public class SeamCarverVisualizer {
             frame.setResizable(false);
             frame.pack();
             frame.setVisible(true);
-         }
+        }
 
-         // draw
-         frame.setContentPane(img.getJLabel());
-         frame.revalidate();
-         frame.repaint();
+        // draw
+        frame.setContentPane(img.getJLabel());
+        frame.revalidate();
+        frame.repaint();
     }
 
     public static void main(String[] args) {
+        args = new String[]{"images/HJoceanSmall.png","70","y"};
         if (args.length <= 1) {
             System.out.println("Usage: SeamCarver [filename] [numPixels] [horizontal | yN]");
             return;
