@@ -57,17 +57,17 @@ public class SeamCarver {
         int blueyUp = coloryUp.getBlue();
         int blueyDown = coloryDown.getBlue();
 
-        int Rx = Math.abs(redxLeft - redxRight);
-        int Gx = Math.abs(greenxLeft - greenxRight);
-        int Bx = Math.abs(bluexLeft - bluexRight);
+        int rX = Math.abs(redxLeft - redxRight);
+        int gX = Math.abs(greenxLeft - greenxRight);
+        int bX = Math.abs(bluexLeft - bluexRight);
 
-        double eX = Rx * Rx + Gx * Gx + Bx * Bx;
+        double eX = rX * rX + gX * gX + bX * bX;
 
-        int Ry = Math.abs(redyUp - redyDown);
-        int Gy = Math.abs(greenyUp - greenyDown);
-        int By = Math.abs(blueyUp - blueyDown);
+        int rY = Math.abs(redyUp - redyDown);
+        int gY = Math.abs(greenyUp - greenyDown);
+        int bY = Math.abs(blueyUp - blueyDown);
 
-        double eY = Ry * Ry + Gy * Gy + By * By;
+        double eY = rY * rY + gY * gY + bY * bY;
         double e = eX + eY;
         return e;
     }
@@ -93,25 +93,53 @@ public class SeamCarver {
     }
 
     public int[] findVerticalSeam() {
-        int width = width();
-        int height = height();
-        int[] vSeam = new int[height];
-        int l = 0;
-        int r = width - 1;
-        for (int i = 0; i < height; i++) {
-            double min = Double.MAX_VALUE;
-            int target = 0;
-            for (int j = l; j <= r; j++) {
-                if (min > energy(j, i)) {
-                    min = energy(j, i);
-                    target = j;
+
+        int w = width();
+        int h = height();
+
+        double[][] distTo = new double[h][w];
+        int[][] edgeTo = new int[h][w];
+
+        // Initialize top row
+        for (int x = 0; x < w; x++) {
+            distTo[0][x] = energy(x, 0);
+        }
+
+        // DP to compute paths
+        for (int y = 1; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                distTo[y][x] = Double.POSITIVE_INFINITY;
+                for (int dx = -1; dx <= 1; dx++) {
+                    int prevX = x + dx;
+                    if (prevX >= 0 && prevX < w) {
+                        double newDist = distTo[y - 1][prevX] + energy(x, y);
+                        if (newDist < distTo[y][x]) {
+                            distTo[y][x] = newDist;
+                            edgeTo[y][x] = prevX;
+                        }
+                    }
                 }
             }
-            vSeam[i] = target;
-            l = target == 0 ? target : target - 1;
-            r = target == width - 1 ? target : target + 1;
         }
-        return vSeam;
+
+        // Find the minimum in the bottom row
+        double minEnergy = Double.POSITIVE_INFINITY;
+        int minIndex = 0;
+        for (int x = 0; x < w; x++) {
+            if (distTo[h - 1][x] < minEnergy) {
+                minEnergy = distTo[h - 1][x];
+                minIndex = x;
+            }
+        }
+
+        // Backtrack the path
+        int[] seam = new int[h];
+        seam[h - 1] = minIndex;
+        for (int y = h - 2; y >= 0; y--) {
+            seam[y] = edgeTo[y + 1][seam[y + 1]];
+        }
+
+        return seam;
     }
 
     public void removeHorizontalSeam(int[] seam) {
