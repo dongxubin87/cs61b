@@ -89,7 +89,7 @@ public class SeamCarverVisualizer {
     }
 
     public static void main(String[] args) {
-        args = new String[]{"images/HJoceanSmall.png","50","y"};
+        args = new String[]{"images/chameleon.png","100","x"};
         if (args.length <= 1) {
             System.out.println("Usage: SeamCarver [filename] [numPixels] [horizontal | yN]");
             return;

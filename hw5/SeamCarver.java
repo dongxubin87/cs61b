@@ -5,14 +5,14 @@ import java.awt.*;
 public class SeamCarver {
     private Picture picture;
 
-
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture);
     }
 
     public Picture picture() {
-        return picture;
+        return new Picture(picture);
     }
+
 
     public int width() {
         return picture.width();
